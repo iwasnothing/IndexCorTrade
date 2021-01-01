@@ -412,15 +412,21 @@ def buyAcc(p,y):
     n = len(p)
     total = 0
     hit = 0
+    bal = 0
     for i in range(n):
         if p[i][0] > 0:
             total = total + 1
             if y[i][0] > 0:
                 hit = hit + 1
+                delta = min(y[i][0],3)
+            else:
+                delta = max(y[i][0],-3)
+
+            bal = bal + delta
 
     if total == 0 :
         return 0
-    return hit*100/total
+    return bal/total
 
 def mainTest(num_samples,num_epochs,sym01,sym02,period):
     best_config = hypertune(num_samples,num_epochs,sym01,sym02,period)
@@ -495,9 +501,9 @@ num_samples = 10
 num_epochs = 10
 dependency = []
 if mkt == 'HK':
-    #sym02 = '7200.HK'
+    sym02 = '7200.HK'
     #sym02 = '7500.HK'
-    sym02 = '^HSI'
+    #sym02 = '^HSI'
     list=[5,2318,1398,2628,823,700,1810,175,3690,2269]
     for i in list:
         dependency.append("{:04d}.HK".format(i))
