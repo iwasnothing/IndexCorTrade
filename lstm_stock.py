@@ -489,20 +489,22 @@ def mainTest(num_samples,num_epochs,sym01,sym02,period):
 #
 #
 #sym01 = '2388.HK'
-mkt='US'
+mkt='HK'
 period = '3y'
 num_samples = 10
 num_epochs = 10
 dependency = []
 if mkt == 'HK':
     #sym02 = '7200.HK'
-    sym02 = '7500.HK'
+    #sym02 = '7500.HK'
+    sym02 = '^HSI'
     list=[5,2318,1398,2628,823,700,1810,175,3690,2269]
     for i in list:
         dependency.append("{:04d}.HK".format(i))
 else:
-    #sym02 = 'NASDX'
-    sym02 = 'QLD'
+    sym02 = 'NASDX'
+    #sym02 = 'QLD'
+    #sym02 = 'QID'
     dependency=['FB', 'AAPL', 'AMZN', 'GOOG', 'NFLX', 'SQ', 'MTCH', 'AYX', 'ROKU', 'TTD' ]
 outcome = []
 df = pd.DataFrame()
