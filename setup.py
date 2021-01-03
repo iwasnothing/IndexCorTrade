@@ -1,7 +1,7 @@
 from setuptools import find_packages
 from setuptools import setup
 
-REQUIRED_PACKAGES = ["matplotlib","pandas","yfinance","lxml","alpaca-trade-api","ray[tune]"]
+REQUIRED_PACKAGES = ["pytorch-lightning","matplotlib","pandas","yfinance","lxml","alpaca-trade-api","ray[tune]"]
 
 setup(
   name='stock',
