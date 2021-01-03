@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: lstm
 spec:
-  schedule: "30 * * * *"
+  schedule: "45 * * * *"
   jobTemplate:
     spec:
       template:
