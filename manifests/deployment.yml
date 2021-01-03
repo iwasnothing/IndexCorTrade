@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: "testrun-8be3"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: "testrun-8be3"
+  template:
+    metadata:
+      labels:
+        app: "testrun-8be3"
+    spec:
+      containers:
+        - name: "testrun-8be3"
+          image: "testing01.azurecr.io/testrun"
+          ports:
+          - containerPort: 8080
