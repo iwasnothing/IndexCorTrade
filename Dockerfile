@@ -9,6 +9,7 @@ RUN pip install yfinance
 RUN pip install scikit-learn
 RUN pip install matplotlib
 # Installs google cloud sdk, this is mostly for using gsutil to export model.
+RUN apt-get install wget -y
 RUN wget -nv \
     https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz && \
     mkdir /root/tools && \
