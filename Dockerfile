@@ -8,5 +8,4 @@ RUN pip install "ray[tune]"
 RUN pip install yfinance
 RUN pip install scikit-learn
 RUN pip install matplotlib
-RUN echo '[GoogleCompute]\nservice_account = default' > /etc/boto.cfg
 ENTRYPOINT [ "python", "trainer/lstm_stock.py" ]
