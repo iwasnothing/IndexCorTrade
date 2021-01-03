@@ -43,7 +43,6 @@ jobs:
         namespace: default
         manifests: |
           manifests/deployment.yml
-          manifests/service.yml
         images: |
           testing01.azurecr.io/testrun:${{ github.sha }}
         imagepullsecrets: |
