@@ -418,9 +418,9 @@ def buyAcc(p,y):
             total = total + 1
             if y[i][0] > 0:
                 hit = hit + 1
-                delta = min(y[i][0],3)
+                delta = min(y[i][0],5)
             else:
-                delta = max(y[i][0],-3)
+                delta = max(y[i][0],-5)
 
             bal = bal + delta
 
@@ -471,6 +471,7 @@ def mainTest(num_samples,num_epochs,sym01,sym02,period):
     print("mse =",mean_squared_error(y,p))
     score = buyAcc(p,y)
     acc = getAcc(p,y)
+    baseline = sum(y)/len(y)
     print("acc =",score)
     plt.clf()
     plt.plot(p,'r')
@@ -484,9 +485,15 @@ def mainTest(num_samples,num_epochs,sym01,sym02,period):
         y_tmr = model(today)
         y_tmr = y_tmr[0][0].numpy()
         print("tmr return is", y_tmr)
-    return (score,acc,y_tmr)
+    return (score,acc,y_tmr,baseline)
 
-
+def download_datafile(sym01,period):
+    custom_date_parser = lambda x: datetime.strptime(x, "%Y-%m-%d")
+    dir = '/Users/kahingleung/PycharmProjects/mylightning/'
+    ticker1 = yf.Ticker(sym01)
+    hist1 = ticker1.history(period=period)
+    hist1 = hist1.dropna().reset_index()
+    hist1.to_csv(dir + sym01 + '.csv', index=False)
 #
 #
 #
@@ -501,9 +508,9 @@ num_samples = 10
 num_epochs = 10
 dependency = []
 if mkt == 'HK':
-    sym02 = '7200.HK'
+    #sym02 = '7200.HK'
     #sym02 = '7500.HK'
-    #sym02 = '^HSI'
+    sym02 = '^HSI'
     list=[5,2318,1398,2628,823,700,1810,175,3690,2269]
     for i in list:
         dependency.append("{:04d}.HK".format(i))
@@ -516,8 +523,11 @@ outcome = []
 df = pd.DataFrame()
 print(dependency)
 for sym01 in dependency:
-    score,acc,tmr = mainTest(num_samples,num_epochs,sym01,sym02,period)
-    outcome.append({'symbol': sym01, 'score': score, 'acc':acc, 'tmr': tmr})
+    download_datafile(sym01, period)
+
+for sym01 in dependency:
+    score,acc,tmr,baseline = mainTest(num_samples,num_epochs,sym01,sym02,period)
+    outcome.append({'symbol': sym01, 'score': score, 'acc':acc, 'tmr': tmr, 'baseline': baseline})
 
 sorted_list = pd.DataFrame(outcome).sort_values('score')
 print(sorted_list)

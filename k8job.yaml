@@ -1,0 +1,12 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: lstm
+spec:
+  template:
+    spec:
+      containers:
+      - name: lstm
+        image: 'testing01.azurecr.io/lstm_build:latest'
+      restartPolicy: Never
+  backoffLimit: 1
