@@ -1,0 +1,50 @@
+on: [push]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    
+    - uses: azure/docker-login@v1
+      with:
+        login-server: testing01.azurecr.io
+        username: ${{ secrets.acr_testing01_username }}
+        password: ${{ secrets.acr_testing01_password }}
+    
+    - name: Build and push image to ACR
+      id: build-image
+      run: |
+        docker build "$GITHUB_WORKSPACE/" -f  "Dockerfile" -t testing01.azurecr.io/testrun:${{ github.sha }}
+        docker push testing01.azurecr.io/testrun:${{ github.sha }}
+    
+    - uses: azure/k8s-set-context@v1
+      with:
+         kubeconfig: ${{ secrets.aks_testrun_kubeConfig }}
+      id: login
+    
+    - name: Create namespace
+      run: |
+        namespacePresent=`kubectl get namespace | grep default | wc -l`
+        if [ $namespacePresent -eq 0 ]
+        then
+            echo `kubectl create namespace default`
+        fi
+
+    - uses: azure/k8s-create-secret@v1
+      with:
+        namespace: default
+        container-registry-url: testing01.azurecr.io
+        container-registry-username: ${{ secrets.acr_testing01_username }}
+        container-registry-password: ${{ secrets.acr_testing01_password }}
+        secret-name: testrundockerauth
+       
+    - uses: azure/k8s-deploy@v1.2
+      with:
+        namespace: default
+        manifests: |
+          manifests/deployment.yml
+          manifests/service.yml
+        images: |
+          testing01.azurecr.io/testrun:${{ github.sha }}
+        imagepullsecrets: |
+          testrundockerauth
