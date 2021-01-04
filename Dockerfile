@@ -8,4 +8,9 @@ RUN pip install "ray[tune]"
 RUN pip install yfinance
 RUN pip install scikit-learn
 RUN pip install matplotlib
+RUN pip install --upgrade google-cloud-pubsub
+RUN pip install --upgrade google-cloud-secret-manager
+RUN pip install --upgrade google-cloud-storage
+RUN pip install --upgrade google-cloud-bigquery
+RUN pip install alpaca-trade-api
 ENTRYPOINT [ "python", "trainer/lstm_stock.py" ]
