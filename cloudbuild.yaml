@@ -18,5 +18,6 @@ steps:
       gcloud ai-platform jobs submit training $job_id \
       --region "us-central1" \
       --master-image-uri=gcr.io/iwasnothing-self-learning/lstmstock:latest \
+      --service-account=pubsubsa@iwasnothing-self-learning.iam.gserviceaccount.com \
       --job-dir "gs://iwasnothing-cloudml-job-dir/simple-stock-train" \
       -- --key-id=$key_id --secret=$secret
