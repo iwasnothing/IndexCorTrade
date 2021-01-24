@@ -1,8 +1,10 @@
 steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: [ 'build', '-t', 'gcr.io/iwasnothing-self-learning/lstmstock', '.' ]
+  timeout: 3600s
 - name: 'gcr.io/cloud-builders/docker'
   args: [ 'push', 'gcr.io/iwasnothing-self-learning/lstmstock' ]
+  timeout: 3600s
 - name: 'gcr.io/cloud-builders/gcloud'
   entrypoint: 'bash'
   args:
