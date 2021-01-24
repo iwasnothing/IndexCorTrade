@@ -25,7 +25,7 @@ def place_order(ticker,spread):
     q=api.get_last_quote(ticker)
     ticker_price = q.bidprice
     print("place order for ",ticker,ticker_price)
-
+    spread = 0.4
     # We could buy a position and add a stop-loss and a take-profit of 5 %
     try:
         r = api.submit_order(
